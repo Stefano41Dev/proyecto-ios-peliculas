@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -20,6 +20,11 @@
 		B51C95E62EF1C5B5004787DD /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95E52EF1C5B5004787DD /* WelcomeViewController.swift */; };
 		B51C95E82EF1C5C6004787DD /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95E72EF1C5C6004787DD /* RegisterViewController.swift */; };
 		B51C95EB2EF1C663004787DD /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95EA2EF1C663004787DD /* ApiManager.swift */; };
+		B51C95EE2EF1CDB1004787DD /* CarouselCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95ED2EF1CDB1004787DD /* CarouselCell.swift */; };
+		B51C95F02EF1CE37004787DD /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95EF2EF1CE37004787DD /* MovieCell.swift */; };
+		B51C95F22EF1D508004787DD /* UImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95F12EF1D508004787DD /* UImage.swift */; };
+		B51C95F42EF1D8CA004787DD /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95F32EF1D8CA004787DD /* Movie.swift */; };
+		B51C95F72EF1DA2C004787DD /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = B51C95F62EF1DA2C004787DD /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +43,10 @@
 		B51C95E52EF1C5B5004787DD /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		B51C95E72EF1C5C6004787DD /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		B51C95EA2EF1C663004787DD /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
+		B51C95ED2EF1CDB1004787DD /* CarouselCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCell.swift; sourceTree = "<group>"; };
+		B51C95EF2EF1CE37004787DD /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
+		B51C95F12EF1D508004787DD /* UImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UImage.swift; sourceTree = "<group>"; };
+		B51C95F32EF1D8CA004787DD /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B51C95F72EF1DA2C004787DD /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,6 +80,7 @@
 		B51C95BB2EF1AFE8004787DD /* Proyecto */ = {
 			isa = PBXGroup;
 			children = (
+				B51C95EC2EF1CDA4004787DD /* Cells */,
 				B51C95E92EF1C657004787DD /* Network */,
 				B51C95E02EF1C491004787DD /* Config */,
 				B51C95D72EF1B71B004787DD /* Resource */,
@@ -107,6 +118,7 @@
 		B51C95D42EF1B656004787DD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B51C95F32EF1D8CA004787DD /* Movie.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -132,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				B51C95E12EF1C4AB004787DD /* KeychainManager.swift */,
+				B51C95F12EF1D508004787DD /* UImage.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -142,6 +155,15 @@
 				B51C95EA2EF1C663004787DD /* ApiManager.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		B51C95EC2EF1CDA4004787DD /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B51C95ED2EF1CDB1004787DD /* CarouselCell.swift */,
+				B51C95EF2EF1CE37004787DD /* MovieCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -160,6 +182,9 @@
 			dependencies = (
 			);
 			name = Proyecto;
+			packageProductDependencies = (
+				B51C95F62EF1DA2C004787DD /* Kingfisher */,
+			);
 			productName = Proyecto;
 			productReference = B51C95B92EF1AFE8004787DD /* Proyecto.app */;
 			productType = "com.apple.product-type.application";
@@ -188,6 +213,9 @@
 				Base,
 			);
 			mainGroup = B51C95B02EF1AFE8004787DD;
+			packageReferences = (
+				B51C95F52EF1DA2C004787DD /* XCLocalSwiftPackageReference "../../../Downloads/Kingfisher-master" */,
+			);
 			productRefGroup = B51C95BA2EF1AFE8004787DD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -215,8 +243,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B51C95F42EF1D8CA004787DD /* Movie.swift in Sources */,
+				B51C95F22EF1D508004787DD /* UImage.swift in Sources */,
 				B51C95E82EF1C5C6004787DD /* RegisterViewController.swift in Sources */,
 				B51C95C12EF1AFE8004787DD /* ViewController.swift in Sources */,
+				B51C95F02EF1CE37004787DD /* MovieCell.swift in Sources */,
+				B51C95EE2EF1CDB1004787DD /* CarouselCell.swift in Sources */,
 				B51C95EB2EF1C663004787DD /* ApiManager.swift in Sources */,
 				B51C95E62EF1C5B5004787DD /* WelcomeViewController.swift in Sources */,
 				B51C95E22EF1C4AB004787DD /* KeychainManager.swift in Sources */,
@@ -445,6 +477,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		B51C95F52EF1DA2C004787DD /* XCLocalSwiftPackageReference "../../../Downloads/Kingfisher-master" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../../../Downloads/Kingfisher-master";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B51C95F62EF1DA2C004787DD /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B51C95B12EF1AFE8004787DD /* Project object */;
 }
