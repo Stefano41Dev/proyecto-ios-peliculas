@@ -15,6 +15,11 @@
 		B51C95C92EF1AFE9004787DD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B51C95C72EF1AFE9004787DD /* LaunchScreen.storyboard */; };
 		B51C95DD2EF1C28D004787DD /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95DC2EF1C28D004787DD /* SplashViewController.swift */; };
 		B51C95DF2EF1C2A4004787DD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95DE2EF1C2A4004787DD /* LoginViewController.swift */; };
+		B51C95E22EF1C4AB004787DD /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95E12EF1C4AB004787DD /* KeychainManager.swift */; };
+		B51C95E42EF1C589004787DD /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95E32EF1C589004787DD /* AuthViewModel.swift */; };
+		B51C95E62EF1C5B5004787DD /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95E52EF1C5B5004787DD /* WelcomeViewController.swift */; };
+		B51C95E82EF1C5C6004787DD /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95E72EF1C5C6004787DD /* RegisterViewController.swift */; };
+		B51C95EB2EF1C663004787DD /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95EA2EF1C663004787DD /* ApiManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +33,11 @@
 		B51C95CA2EF1AFE9004787DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B51C95DC2EF1C28D004787DD /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		B51C95DE2EF1C2A4004787DD /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		B51C95E12EF1C4AB004787DD /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		B51C95E32EF1C589004787DD /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		B51C95E52EF1C5B5004787DD /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		B51C95E72EF1C5C6004787DD /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		B51C95EA2EF1C663004787DD /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +70,8 @@
 		B51C95BB2EF1AFE8004787DD /* Proyecto */ = {
 			isa = PBXGroup;
 			children = (
+				B51C95E92EF1C657004787DD /* Network */,
+				B51C95E02EF1C491004787DD /* Config */,
 				B51C95D72EF1B71B004787DD /* Resource */,
 				B51C95D52EF1B6CE004787DD /* App */,
 				B51C95D42EF1B656004787DD /* Models */,
@@ -73,8 +85,13 @@
 		B51C95D02EF1B624004787DD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B51C95DE2EF1C2A4004787DD /* LoginViewController.swift */,
+				B51C95DC2EF1C28D004787DD /* SplashViewController.swift */,
+				B51C95C02EF1AFE8004787DD /* ViewController.swift */,
 				B51C95C72EF1AFE9004787DD /* LaunchScreen.storyboard */,
 				B51C95C22EF1AFE8004787DD /* Main.storyboard */,
+				B51C95E52EF1C5B5004787DD /* WelcomeViewController.swift */,
+				B51C95E72EF1C5C6004787DD /* RegisterViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -82,9 +99,7 @@
 		B51C95D22EF1B631004787DD /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				B51C95C02EF1AFE8004787DD /* ViewController.swift */,
-				B51C95DC2EF1C28D004787DD /* SplashViewController.swift */,
-				B51C95DE2EF1C2A4004787DD /* LoginViewController.swift */,
+				B51C95E32EF1C589004787DD /* AuthViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -111,6 +126,22 @@
 				B51C95C52EF1AFE9004787DD /* Assets.xcassets */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		B51C95E02EF1C491004787DD /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				B51C95E12EF1C4AB004787DD /* KeychainManager.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		B51C95E92EF1C657004787DD /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				B51C95EA2EF1C663004787DD /* ApiManager.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -184,8 +215,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B51C95E82EF1C5C6004787DD /* RegisterViewController.swift in Sources */,
 				B51C95C12EF1AFE8004787DD /* ViewController.swift in Sources */,
+				B51C95EB2EF1C663004787DD /* ApiManager.swift in Sources */,
+				B51C95E62EF1C5B5004787DD /* WelcomeViewController.swift in Sources */,
+				B51C95E22EF1C4AB004787DD /* KeychainManager.swift in Sources */,
 				B51C95BD2EF1AFE8004787DD /* AppDelegate.swift in Sources */,
+				B51C95E42EF1C589004787DD /* AuthViewModel.swift in Sources */,
 				B51C95BF2EF1AFE8004787DD /* SceneDelegate.swift in Sources */,
 				B51C95DF2EF1C2A4004787DD /* LoginViewController.swift in Sources */,
 				B51C95DD2EF1C28D004787DD /* SplashViewController.swift in Sources */,
