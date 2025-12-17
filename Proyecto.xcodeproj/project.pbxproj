@@ -30,6 +30,12 @@
 		B5499DA32EF30DD400D80BB3 /* TrailerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5499DA22EF30DD400D80BB3 /* TrailerResponse.swift */; };
 		B5499DA52EF30FC800D80BB3 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5499DA42EF30FC800D80BB3 /* WelcomeViewModel.swift */; };
 		B5499DA82EF3105700D80BB3 /* MovieRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5499DA72EF3105700D80BB3 /* MovieRepository.swift */; };
+		B5499DAA2EF3140200D80BB3 /* Cast.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5499DA92EF3140200D80BB3 /* Cast.swift */; };
+		B5499DAC2EF3154600D80BB3 /* MovieDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5499DAB2EF3154600D80BB3 /* MovieDetailViewModel.swift */; };
+		B5499DAE2EF3156900D80BB3 /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5499DAD2EF3156900D80BB3 /* MovieDetailViewController.swift */; };
+		B5499DB12EF3170B00D80BB3 /* MovieEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5499DB02EF3170B00D80BB3 /* MovieEndpoint.swift */; };
+		B5499DB32EF3178500D80BB3 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5499DB22EF3178500D80BB3 /* SectionHeaderView.swift */; };
+		B5499DB52EF317C500D80BB3 /* MovieSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5499DB42EF317C500D80BB3 /* MovieSection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +64,12 @@
 		B5499DA22EF30DD400D80BB3 /* TrailerResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailerResponse.swift; sourceTree = "<group>"; };
 		B5499DA42EF30FC800D80BB3 /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		B5499DA72EF3105700D80BB3 /* MovieRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieRepository.swift; sourceTree = "<group>"; };
+		B5499DA92EF3140200D80BB3 /* Cast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cast.swift; sourceTree = "<group>"; };
+		B5499DAB2EF3154600D80BB3 /* MovieDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewModel.swift; sourceTree = "<group>"; };
+		B5499DAD2EF3156900D80BB3 /* MovieDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewController.swift; sourceTree = "<group>"; };
+		B5499DB02EF3170B00D80BB3 /* MovieEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieEndpoint.swift; sourceTree = "<group>"; };
+		B5499DB22EF3178500D80BB3 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
+		B5499DB42EF317C500D80BB3 /* MovieSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieSection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +128,8 @@
 				B51C95C22EF1AFE8004787DD /* Main.storyboard */,
 				B51C95E52EF1C5B5004787DD /* WelcomeViewController.swift */,
 				B51C95E72EF1C5C6004787DD /* RegisterViewController.swift */,
+				B5499DAD2EF3156900D80BB3 /* MovieDetailViewController.swift */,
+				B5499DB22EF3178500D80BB3 /* SectionHeaderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -125,6 +139,7 @@
 			children = (
 				B51C95E32EF1C589004787DD /* AuthViewModel.swift */,
 				B5499DA42EF30FC800D80BB3 /* WelcomeViewModel.swift */,
+				B5499DAB2EF3154600D80BB3 /* MovieDetailViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -132,9 +147,11 @@
 		B51C95D42EF1B656004787DD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B5499DAF2EF316F700D80BB3 /* Enum */,
 				B5499D9D2EF30D7600D80BB3 /* Dto */,
 				B51C95F32EF1D8CA004787DD /* Movie.swift */,
 				B5499D9B2EF30C0600D80BB3 /* Trailer.swift */,
+				B5499DA92EF3140200D80BB3 /* Cast.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -205,6 +222,15 @@
 				B5499DA72EF3105700D80BB3 /* MovieRepository.swift */,
 			);
 			path = Repository;
+			sourceTree = "<group>";
+		};
+		B5499DAF2EF316F700D80BB3 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				B5499DB02EF3170B00D80BB3 /* MovieEndpoint.swift */,
+				B5499DB42EF317C500D80BB3 /* MovieSection.swift */,
+			);
+			path = Enum;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -292,19 +318,25 @@
 				B5499D9C2EF30C0600D80BB3 /* Trailer.swift in Sources */,
 				B51C95F22EF1D508004787DD /* UImage.swift in Sources */,
 				B51C95E82EF1C5C6004787DD /* RegisterViewController.swift in Sources */,
+				B5499DAC2EF3154600D80BB3 /* MovieDetailViewModel.swift in Sources */,
 				B51C95C12EF1AFE8004787DD /* ViewController.swift in Sources */,
 				B51C95F02EF1CE37004787DD /* MovieCell.swift in Sources */,
 				B51C95EE2EF1CDB1004787DD /* CarouselCell.swift in Sources */,
 				B5499DA82EF3105700D80BB3 /* MovieRepository.swift in Sources */,
 				B51C95EB2EF1C663004787DD /* ApiManager.swift in Sources */,
 				B51C95E62EF1C5B5004787DD /* WelcomeViewController.swift in Sources */,
+				B5499DB12EF3170B00D80BB3 /* MovieEndpoint.swift in Sources */,
 				B51C95E22EF1C4AB004787DD /* KeychainManager.swift in Sources */,
+				B5499DAA2EF3140200D80BB3 /* Cast.swift in Sources */,
 				B51C95BD2EF1AFE8004787DD /* AppDelegate.swift in Sources */,
 				B51C95E42EF1C589004787DD /* AuthViewModel.swift in Sources */,
 				B51C95BF2EF1AFE8004787DD /* SceneDelegate.swift in Sources */,
 				B5499DA12EF30DA800D80BB3 /* MovieResponse.swift in Sources */,
+				B5499DB52EF317C500D80BB3 /* MovieSection.swift in Sources */,
+				B5499DB32EF3178500D80BB3 /* SectionHeaderView.swift in Sources */,
 				B51C95DF2EF1C2A4004787DD /* LoginViewController.swift in Sources */,
 				B51C95DD2EF1C28D004787DD /* SplashViewController.swift in Sources */,
+				B5499DAE2EF3156900D80BB3 /* MovieDetailViewController.swift in Sources */,
 				B5499DA32EF30DD400D80BB3 /* TrailerResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

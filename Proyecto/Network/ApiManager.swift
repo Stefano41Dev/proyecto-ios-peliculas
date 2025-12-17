@@ -61,6 +61,51 @@ class APIManager {
         }
         task.resume()
     }
+    // Obtener detalles completos de una película (Info, Reparto, Trailers)
+        func fetchMovieDetails(movieID: Int, completion: @escaping (Movie?, Error?) -> Void) {
+            // 'append_to_response' permite traer los créditos y videos en la misma respuesta del detalle
+            let urlString = "\(baseURL)/movie/\(movieID)?api_key=\(apiKey)&language=es&append_to_response=credits,videos"
+            
+            guard let url = URL(string: urlString) else { return }
+
+            let task = URLSession.shared.dataTask(with: url) { data, _, error in
+                if let error = error {
+                    print("Error en fetchMovieDetails: \(error.localizedDescription)")
+                    completion(nil, error)
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(nil, nil)
+                    return
+                }
+                
+                do {
+                    let movieDetail = try JSONDecoder().decode(Movie.self, from: data)
+                    completion(movieDetail, nil)
+                } catch {
+                    print("Error decoding movie details: \(error)")
+                    completion(nil, error)
+                }
+            }
+            task.resume()
+        }
+    func fetchMovies(endpoint: MovieEndpoint, completion: @escaping ([Movie]?, Error?) -> Void) {
+            let urlString = "\(baseURL)/movie/\(endpoint.rawValue)?api_key=\(apiKey)&language=es-ES"
+            guard let url = URL(string: urlString) else { return }
+            
+            URLSession.shared.dataTask(with: url) { data, _, error in
+                if let error = error { completion(nil, error); return }
+                guard let data = data else { completion(nil, nil); return }
+                
+                do {
+                    let response = try JSONDecoder().decode(MovieResponse.self, from: data)
+                    completion(response.results, nil)
+                } catch {
+                    completion(nil, error)
+                }
+            }.resume()
+        }
     
     
     

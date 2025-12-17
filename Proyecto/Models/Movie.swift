@@ -7,25 +7,45 @@
 import Foundation
 
 struct Movie: Codable {
-    let title: String
-    let posterPath: String?
-    let overview: String
     let id: Int?
-
-    // CLAVE: Mapeo y URL de la Imagen 
+    let title: String
+    let overview: String
+    let posterPath: String?
+    let backdropPath: String? // Imagen de fondo para el detalle
+    let releaseDate: String?
+    let voteAverage: Double?  // Tu "Ranking" o calificación
+    let runtime: Int?         // Duración en minutos
     
-    private enum CodingKeys: String, CodingKey {
-        case title
-        case posterPath = "poster_path" // Mapea 'poster_path' del JSON a 'posterPath' de Swift
-        case overview
-        case id
+    // Estos campos vendrán llenos solo cuando usemos el endpoint de detalle con append_to_response
+    let credits: CreditsResponse?
+    let videos: TrailerResponse?
+
+    enum CodingKeys: String, CodingKey {
+        case id, title, overview
+        case posterPath = "poster_path"
+        case backdropPath = "backdrop_path"
+        case releaseDate = "release_date"
+        case voteAverage = "vote_average"
+        case runtime
+        case credits, videos
     }
 
-    
     var posterURL: URL? {
         let imageBaseURL = "https://image.tmdb.org/t/p/w500"
         guard let path = posterPath else { return nil }
-        
         return URL(string: imageBaseURL + path)
+    }
+    
+    var backdropURL: URL? {
+        let imageBaseURL = "https://image.tmdb.org/t/p/w780" // Mejor calidad para el fondo
+        guard let path = backdropPath else { return nil }
+        return URL(string: imageBaseURL + path)
+    }
+    
+    // Formato amigable para el ranking (ej: "8.5 ★")
+    // Nota: TMDB no da "Rotten Tomatoes", da su propio "Vote Average".
+    var ratingDisplay: String {
+        guard let rating = voteAverage else { return "N/A" }
+        return String(format: "%.1f ★", rating)
     }
 }

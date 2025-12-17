@@ -22,5 +22,10 @@ class MovieRepository {
             completion(trailers, error)
         }
     }
+    func getMovieDetail(id: Int, completion: @escaping (Movie?, Error?) -> Void) {
+            apiManager.fetchMovieDetails(movieID: id) { movie, error in
+                completion(movie, error)
+            }
+        }
     
 }
