@@ -1,53 +1,11 @@
-// APIManager.swift
+
 
 import Foundation
 
-// MARK: - Modelos de Respuesta de la API (TMDb)
-
-struct MovieResponse: Codable {
-    let results: [Movie]
-}
-
-struct Movie: Codable {
-    let title: String
-    let posterPath: String?
-    let overview: String
-    let id: Int?
-
-    // 🌟 CLAVE: Mapeo y URL de la Imagen 🌟
-    
-    private enum CodingKeys: String, CodingKey {
-        case title
-        case posterPath = "poster_path" // Mapea 'poster_path' del JSON a 'posterPath' de Swift
-        case overview
-        case id
-    }
-
-    // Propiedad Calculada: URL COMPLETA del póster, lista para Kingfisher
-    var posterURL: URL? {
-        let imageBaseURL = "https://image.tmdb.org/t/p/w500"
-        guard let path = posterPath else { return nil }
-        
-        return URL(string: imageBaseURL + path)
-    }
-}
-
-struct TrailerResponse: Codable {
-    let results: [Trailer]
-}
-
-struct Trailer: Codable {
-    let key: String // YouTube key
-    let name: String
-    let site: String // YouTube
-    let type: String // Trailer, Teaser
-}
-
-// MARK: - Clase APIManager
-
 class APIManager {
+    
     static let shared = APIManager()
-    private let apiKey = "f930fa213d5cf22cd62dd1c0df2e303e" // Tu API Key
+    private let apiKey = "f930fa213d5cf22cd62dd1c0df2e303e"
     private let baseURL = "https://api.themoviedb.org/3"
     
     // Función para obtener películas populares
@@ -103,4 +61,7 @@ class APIManager {
         }
         task.resume()
     }
+    
+    
+    
 }
