@@ -106,6 +106,30 @@ class APIManager {
                 }
             }.resume()
         }
+    func searchMovies(query: String, completion: @escaping ([Movie]?, Error?) -> Void) {
+            // Reemplazar espacios por %20 para la URL
+            guard let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
+            
+            let urlString = "\(baseURL)/search/movie?api_key=\(apiKey)&language=es-ES&query=\(encodedQuery)&page=1&include_adult=false"
+            
+            guard let url = URL(string: urlString) else { return }
+            
+            let task = URLSession.shared.dataTask(with: url) { data, _, error in
+                if let error = error {
+                    completion(nil, error)
+                    return
+                }
+                guard let data = data else { return }
+                
+                do {
+                    let response = try JSONDecoder().decode(MovieResponse.self, from: data)
+                    completion(response.results, nil)
+                } catch {
+                    completion(nil, error)
+                }
+            }
+            task.resume()
+        }
     
     
     

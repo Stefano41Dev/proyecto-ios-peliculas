@@ -43,6 +43,24 @@ class RegisterViewController: UIViewController {
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
+    
+    // NUEVO BOTÓN: Para ir al Login si ya tiene cuenta
+    private let loginAccountButton: UIButton = {
+        let btn = UIButton(type: .system)
+        // Usamos un texto con dos colores o simple, aquí uno simple pero elegante
+        let attributedTitle = NSMutableAttributedString(string: "¿Ya tienes cuenta? ", attributes: [
+            .foregroundColor: UIColor.white.withAlphaComponent(0.7),
+            .font: UIFont.systemFont(ofSize: 14)
+        ])
+        attributedTitle.append(NSAttributedString(string: "Inicia sesión", attributes: [
+            .foregroundColor: UIColor.systemRed,
+            .font: UIFont.boldSystemFont(ofSize: 14)
+        ]))
+        
+        btn.setAttributedTitle(attributedTitle, for: .normal)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,8 +72,12 @@ class RegisterViewController: UIViewController {
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
         view.addSubview(registerButton)
+        view.addSubview(loginAccountButton) // Agregamos el nuevo botón a la vista
 
         registerButton.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+        
+        // Conectamos la acción de ir al login
+        loginAccountButton.addTarget(self, action: #selector(handleGoToLogin), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
             emailTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
@@ -71,7 +93,12 @@ class RegisterViewController: UIViewController {
             registerButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 32),
             registerButton.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
             registerButton.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
-            registerButton.heightAnchor.constraint(equalToConstant: 50)
+            registerButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            // Constraints para el botón de Login
+            loginAccountButton.topAnchor.constraint(equalTo: registerButton.bottomAnchor, constant: 16),
+            loginAccountButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loginAccountButton.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
 
@@ -90,5 +117,10 @@ class RegisterViewController: UIViewController {
             present(alert, animated: true)
         }
     }
+    
+    // Acción para volver al Login
+    @objc private func handleGoToLogin() {
+        // Simplemente cerramos esta pantalla para volver a la anterior (Login)
+        dismiss(animated: true, completion: nil)
+    }
 }
-

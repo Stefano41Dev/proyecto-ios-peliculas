@@ -113,6 +113,18 @@ class MovieDetailViewController: UIViewController {
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
+    
+    private let favoriteButton: UIButton = {
+            let btn = UIButton(type: .system)
+            let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
+            let image = UIImage(systemName: "heart", withConfiguration: config)
+            btn.setImage(image, for: .normal)
+            btn.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+            btn.tintColor = .white
+            btn.layer.cornerRadius = 20
+            btn.translatesAutoresizingMaskIntoConstraints = false
+            return btn
+        }()
 
     // MARK: - Init
     
@@ -134,6 +146,7 @@ class MovieDetailViewController: UIViewController {
         bindViewModel()
         viewModel.loadDetails()
         setupBackButton()
+        setupFavoritesButton()
     }
     
     override func viewDidLayoutSubviews() {
@@ -216,6 +229,27 @@ class MovieDetailViewController: UIViewController {
             castCollectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40)
         ])
     }
+    private func setupFavoritesButton() {
+            view.addSubview(favoriteButton)
+            favoriteButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
+            
+            NSLayoutConstraint.activate([
+                // Lo ponemos a la derecha, opuesto al botón atrás
+                favoriteButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+                favoriteButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                favoriteButton.widthAnchor.constraint(equalToConstant: 40),
+                favoriteButton.heightAnchor.constraint(equalToConstant: 40)
+            ])
+        }
+    private func updateFavoriteIcon() {
+            guard let movie = viewModel.movie, let id = movie.id else { return }
+            let isFav = FavoritesManager.shared.isFavorite(movieID: id)
+            let imageName = isFav ? "heart.fill" : "heart"
+            let color: UIColor = isFav ? .systemRed : .white
+            
+            favoriteButton.setImage(UIImage(systemName: imageName), for: .normal)
+            favoriteButton.tintColor = color
+        }
     private func setupBackButton() {
             // IMPORTANTE: Añadirlo directamente a la 'view' principal, NO al ScrollView,
             // para que se quede fijo flotando aunque bajes haciendo scroll.
@@ -232,6 +266,16 @@ class MovieDetailViewController: UIViewController {
                 backButton.widthAnchor.constraint(equalToConstant: 40),
                 backButton.heightAnchor.constraint(equalToConstant: 40)
             ])
+        }
+    override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            navigationController?.setNavigationBarHidden(true, animated: animated)
+        }
+
+        // Mostrarla de nuevo al salir (para que no afecte a otras pantallas)
+        override func viewWillDisappear(_ animated: Bool) {
+            super.viewWillDisappear(animated)
+            navigationController?.setNavigationBarHidden(false, animated: animated)
         }
     // MARK: - Binding
     
@@ -265,7 +309,22 @@ class MovieDetailViewController: UIViewController {
         UIApplication.shared.open(url)
     }
     @objc private func didTapBack() {
-            dismiss(animated: true, completion: nil)
+            // Si hay una pila de navegación (Navigation Controller), hacemos "Pop" (Retroceder)
+            if let navigationController = navigationController {
+                navigationController.popViewController(animated: true)
+            } else {
+                // Si por alguna razón se presentó modal, usamos Dismiss
+                dismiss(animated: true, completion: nil)
+            }
+        }
+    @objc private func toggleFavorite() {
+            guard let movie = viewModel.movie else { return }
+            FavoritesManager.shared.toggleFavorite(movie: movie)
+            updateFavoriteIcon() // Actualiza visualmente
+            
+            // Feedback háptico (vibración ligera)
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
         }
 }
 

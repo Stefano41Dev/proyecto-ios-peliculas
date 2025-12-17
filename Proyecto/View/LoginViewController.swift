@@ -101,18 +101,20 @@ class LoginViewController: UIViewController {
     }
 
     @objc private func handleLogin() {
-        guard let email = emailTextField.text, let password = passwordTextField.text else { return }
+            guard let email = emailTextField.text, let password = passwordTextField.text else { return }
 
-        if viewModel.login(email: email, password: password) {
-            let welcomeVC = WelcomeViewController()
-            welcomeVC.modalPresentationStyle = .fullScreen
-            present(welcomeVC, animated: true)
-        } else {
-            let alert = UIAlertController(title: "Error", message: "Usuario o contraseña incorrectos", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            present(alert, animated: true)
+            if viewModel.login(email: email, password: password) {
+                // CAMBIO AQUÍ: Instanciamos el TabBar
+                let mainTabBar = MainTabBarController()
+                mainTabBar.modalPresentationStyle = .fullScreen
+                mainTabBar.modalTransitionStyle = .crossDissolve // Transición suave
+                present(mainTabBar, animated: true)
+            } else {
+                let alert = UIAlertController(title: "Error", message: "Usuario o contraseña incorrectos", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                present(alert, animated: true)
+            }
         }
-    }
 
     @objc private func openRegister() {
         let registerVC = RegisterViewController()
