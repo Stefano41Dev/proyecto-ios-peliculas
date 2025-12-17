@@ -11,10 +11,22 @@ class SearchViewController: UIViewController {
     
     private let viewModel = SearchViewModel()
     
-    // Barra de búsqueda integrada
     private let searchController = UISearchController(searchResultsController: nil)
+    var isCategoryMode = false
+    var initialGenre: Genre?
     
-    // 1. Vista para RESULTADOS (Grid de películas)
+    private lazy var categoriesCollectionView: UICollectionView = {
+            let layout = UICollectionViewFlowLayout()
+            layout.scrollDirection = .horizontal
+            layout.estimatedItemSize = CGSize(width: 80, height: 32)
+            layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+            let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+            cv.backgroundColor = .black
+            cv.showsHorizontalScrollIndicator = false
+            cv.translatesAutoresizingMaskIntoConstraints = false
+            return cv
+        }()
+    
     private lazy var resultsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 110, height: 180) // Un poco más pequeños
@@ -42,8 +54,43 @@ class SearchViewController: UIViewController {
         setupSearchController()
         setupUI()
         bindViewModel()
+        if isCategoryMode, let genre = initialGenre {
+                    title = genre.name
+                    searchController.isActive = false // Ocultamos buscador si quieres, o lo dejas
+                    viewModel.searchByGenre(id: genre.id)
+                    resultsCollectionView.isHidden = false
+                    historyTableView.isHidden = true
+                    categoriesCollectionView.isHidden = true // Ocultamos barra de filtros
+                } else {
+                    // Modo Normal (Buscador + Filtros)
+                    setupCategoriesUI()
+                    viewModel.loadGenres { [weak self] in
+                        DispatchQueue.main.async {
+                            self?.categoriesCollectionView.reloadData()
+                        }
+                    }
+                }
     }
-    
+    private func setupCategoriesUI() {
+            // Insertar categoriesCollectionView debajo del SafeArea y arriba de los resultados
+            view.addSubview(categoriesCollectionView)
+            
+            categoriesCollectionView.delegate = self
+            categoriesCollectionView.dataSource = self
+            categoriesCollectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.reuseIdentifier)
+            
+            NSLayoutConstraint.activate([
+                categoriesCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                categoriesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                categoriesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                categoriesCollectionView.heightAnchor.constraint(equalToConstant: 50),
+                
+                // Ajustar las otras vistas para que empiecen debajo de las categorías
+                historyTableView.topAnchor.constraint(equalTo: categoriesCollectionView.bottomAnchor),
+                resultsCollectionView.topAnchor.constraint(equalTo: categoriesCollectionView.bottomAnchor)
+                // (El resto de constraints bottom/leading/trailing se mantienen igual)
+            ])
+        }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadHistory()
@@ -146,6 +193,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - CollectionView (Resultados)
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.movies.count
     }
@@ -157,16 +205,32 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let movie = viewModel.movies[indexPath.row]
+        if collectionView == categoriesCollectionView {
+                    // Filtrar por género
+                    let genre = viewModel.genres[indexPath.row]
+                    viewModel.searchByGenre(id: genre.id)
+                    
+                    // Actualizar UI
+                    searchController.searchBar.text = "" // Limpiar texto
+                    searchController.searchBar.resignFirstResponder()
+                    searchController.isActive = false
+                    
+                    resultsCollectionView.isHidden = false
+                    historyTableView.isHidden = true
+                } else {
+                    // Click en película (Tu código existente para ir al detalle)
+                    let movie = viewModel.movies[indexPath.row]
+                    
+                    // Guardar en historial al seleccionar
+                    if let text = searchController.searchBar.text {
+                        viewModel.addToHistory(query: text)
+                    }
+                    
+                    guard let id = movie.id else { return }
+                    let detailVC = MovieDetailViewController(movieID: id)
+                    detailVC.modalPresentationStyle = .fullScreen
+                    present(detailVC, animated: true)
+                }
         
-        // Guardar en historial al seleccionar
-        if let text = searchController.searchBar.text {
-            viewModel.addToHistory(query: text)
-        }
-        
-        guard let id = movie.id else { return }
-        let detailVC = MovieDetailViewController(movieID: id)
-        detailVC.modalPresentationStyle = .fullScreen
-        present(detailVC, animated: true)
     }
 }

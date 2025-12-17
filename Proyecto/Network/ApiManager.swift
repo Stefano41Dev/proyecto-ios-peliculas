@@ -130,7 +130,39 @@ class APIManager {
             }
             task.resume()
         }
+        
+    func fetchGenres(completion: @escaping ([Genre]?, Error?) -> Void) {
+            let urlString = "\(baseURL)/genre/movie/list?api_key=\(apiKey)&language=es-ES"
+            guard let url = URL(string: urlString) else { return }
+            
+            URLSession.shared.dataTask(with: url) { data, _, error in
+                if let error = error { completion(nil, error); return }
+                guard let data = data else { return }
+                
+                do {
+                    let response = try JSONDecoder().decode(GenreResponse.self, from: data)
+                    completion(response.genres, nil)
+                } catch {
+                    completion(nil, error)
+                }
+            }.resume()
+        }
     
-    
+    func fetchMoviesByGenre(genreId: Int, completion: @escaping ([Movie]?, Error?) -> Void) {
+            let urlString = "\(baseURL)/discover/movie?api_key=\(apiKey)&language=es-ES&sort_by=popularity.desc&with_genres=\(genreId)"
+            guard let url = URL(string: urlString) else { return }
+            
+            URLSession.shared.dataTask(with: url) { data, _, error in
+                if let error = error { completion(nil, error); return }
+                guard let data = data else { return }
+                
+                do {
+                    let response = try JSONDecoder().decode(MovieResponse.self, from: data)
+                    completion(response.results, nil)
+                } catch {
+                    completion(nil, error)
+                }
+            }.resume()
+        }
     
 }

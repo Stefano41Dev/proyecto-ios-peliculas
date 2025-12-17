@@ -11,7 +11,7 @@ class SearchViewModel {
     
     var movies: [Movie] = []
     var searchHistory: [String] = []
-    
+    var genres: [Genre] = []
     var onResultsUpdated: (() -> Void)?
     
     private var searchTimer: Timer?
@@ -21,6 +21,20 @@ class SearchViewModel {
         loadHistory()
     }
     
+    func loadGenres(completion: @escaping () -> Void) {
+            APIManager.shared.fetchGenres { [weak self] genres, _ in
+                self?.genres = genres ?? []
+                completion()
+            }
+    }
+    func searchByGenre(id: Int) {
+            APIManager.shared.fetchMoviesByGenre(genreId: id) { [weak self] movies, _ in
+                self?.movies = movies ?? []
+                DispatchQueue.main.async {
+                    self?.onResultsUpdated?()
+                }
+            }
+        }
     // Búsqueda en tiempo real con debounce
     func search(query: String) {
         searchTimer?.invalidate()
