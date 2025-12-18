@@ -26,26 +26,6 @@ class WelcomeViewModel {
                         group.leave()
             }
             
-            // 2. Populares
-            group.enter()
-            apiManager.fetchMovies(endpoint: .popular) { [weak self] movies, _ in
-                self?.moviesBySection[.popular] = movies
-                group.leave()
-            }
-            
-            // 3. Top Rated
-            group.enter()
-            apiManager.fetchMovies(endpoint: .topRated) { [weak self] movies, _ in
-                self?.moviesBySection[.topRated] = movies
-                group.leave()
-            }
-            
-            // 4. Upcoming
-            group.enter()
-            apiManager.fetchMovies(endpoint: .upcoming) { [weak self] movies, _ in
-                self?.moviesBySection[.upcoming] = movies
-                group.leave()
-            }
             MovieSection.allCases.forEach { section in
                         group.enter()
                         // Asumiendo que tienes el endpoint mapeado en tu enum o manager

@@ -76,7 +76,7 @@ class WelcomeViewController: UIViewController {
         viewModel.onDataUpdated = { [weak self] in
             guard let self = self else { return }
             // Al actualizar datos, refrescamos el layout por si cambió de Modo Normal a Filtrado
-            self.collectionView.setCollectionViewLayout(self.createCompositionalLayout(), animated: true)
+            self.collectionView.setCollectionViewLayout(self.createCompositionalLayout(), animated: false)
             self.collectionView.reloadData()
         }
         

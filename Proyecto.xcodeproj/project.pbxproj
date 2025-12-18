@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -24,7 +24,7 @@
 		B51C95F02EF1CE37004787DD /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95EF2EF1CE37004787DD /* MovieCell.swift */; };
 		B51C95F22EF1D508004787DD /* UImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95F12EF1D508004787DD /* UImage.swift */; };
 		B51C95F42EF1D8CA004787DD /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51C95F32EF1D8CA004787DD /* Movie.swift */; };
-		B5499D9A2EF3091C00D80BB3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = B5499D992EF3091C00D80BB3 /* Kingfisher */; };
+		B52E1EE42EF459BE0087A785 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = B52E1EE32EF459BE0087A785 /* Kingfisher */; };
 		B5499D9C2EF30C0600D80BB3 /* Trailer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5499D9B2EF30C0600D80BB3 /* Trailer.swift */; };
 		B5499DA12EF30DA800D80BB3 /* MovieResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5499DA02EF30DA800D80BB3 /* MovieResponse.swift */; };
 		B5499DA32EF30DD400D80BB3 /* TrailerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5499DA22EF30DD400D80BB3 /* TrailerResponse.swift */; };
@@ -67,6 +67,7 @@
 		B51C95EF2EF1CE37004787DD /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		B51C95F12EF1D508004787DD /* UImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UImage.swift; sourceTree = "<group>"; };
 		B51C95F32EF1D8CA004787DD /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		B52E1EE22EF459A00087A785 /* Kingfisher-master */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "Kingfisher-master"; path = "../Kingfisher-master"; sourceTree = "<group>"; };
 		B5499D982EF308E600D80BB3 /* Kingfisher-master */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "Kingfisher-master"; path = "../../Downloads/Kingfisher-master"; sourceTree = "<group>"; };
 		B5499D9B2EF30C0600D80BB3 /* Trailer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trailer.swift; sourceTree = "<group>"; };
 		B5499DA02EF30DA800D80BB3 /* MovieResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieResponse.swift; sourceTree = "<group>"; };
@@ -95,7 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5499D9A2EF3091C00D80BB3 /* Kingfisher in Frameworks */,
+				B52E1EE42EF459BE0087A785 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +229,7 @@
 		B5499D972EF308E600D80BB3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B52E1EE22EF459A00087A785 /* Kingfisher-master */,
 				B5499D982EF308E600D80BB3 /* Kingfisher-master */,
 			);
 			name = Frameworks;
@@ -277,7 +279,7 @@
 			);
 			name = Proyecto;
 			packageProductDependencies = (
-				B5499D992EF3091C00D80BB3 /* Kingfisher */,
+				B52E1EE32EF459BE0087A785 /* Kingfisher */,
 			);
 			productName = Proyecto;
 			productReference = B51C95B92EF1AFE8004787DD /* Proyecto.app */;
@@ -311,7 +313,6 @@
 			);
 			mainGroup = B51C95B02EF1AFE8004787DD;
 			packageReferences = (
-				B51C95F52EF1DA2C004787DD /* XCLocalSwiftPackageReference "../../../Downloads/Kingfisher-master" */,
 			);
 			productRefGroup = B51C95BA2EF1AFE8004787DD /* Products */;
 			projectDirPath = "";
@@ -595,17 +596,9 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		B51C95F52EF1DA2C004787DD /* XCLocalSwiftPackageReference "../../../Downloads/Kingfisher-master" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "../../../Downloads/Kingfisher-master";
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
-		B5499D992EF3091C00D80BB3 /* Kingfisher */ = {
+		B52E1EE32EF459BE0087A785 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B51C95F52EF1DA2C004787DD /* XCLocalSwiftPackageReference "../../../Downloads/Kingfisher-master" */;
 			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
