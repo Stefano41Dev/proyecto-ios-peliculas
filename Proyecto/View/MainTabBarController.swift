@@ -28,6 +28,11 @@ class MainTabBarController: UITabBarController {
         // Icono: Lupa
         searchNav.tabBarItem = UITabBarItem(title: "Buscar", image: UIImage(systemName: "magnifyingglass"), selectedImage: UIImage(systemName: "magnifyingglass"))
         
+        // --- 3. NUEVO: Asistente IA ---
+        let aiVC = AIViewController()
+        let navAI = UINavigationController(rootViewController: aiVC)
+        navAI.tabBarItem = UITabBarItem(title: "Asistente", image: UIImage(systemName: "sparkles"), tag: 2) // Icono 'sparkles' queda genial para IA
+        
         // 3. FAVORITOS
         let favoritesVC = FavoritesViewController() // Debes tener creada la clase FavoritesViewController
         let favNav = UINavigationController(rootViewController: favoritesVC)
@@ -40,8 +45,8 @@ class MainTabBarController: UITabBarController {
         // Icono: Persona
         profileNav.tabBarItem = UITabBarItem(title: "Perfil", image: UIImage(systemName: "person"), selectedImage: UIImage(systemName: "person.fill"))
         
-        // IMPORTANTE: Aquí se agregan los 4 controladores al TabBar
-        setViewControllers([homeNav, searchNav, favNav, profileNav], animated: true)
+        // Asignar todos los controladores al TabBar
+        setViewControllers([homeNav, searchNav, navAI, favNav, profileNav], animated: true)
     }
     
     private func setupAppearance() {

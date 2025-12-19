@@ -46,6 +46,8 @@
 		B5499DC72EF32CE100D80BB3 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5499DC62EF32CE100D80BB3 /* CategoryCell.swift */; };
 		B58DC8C52EF4D22300A616D3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = B58DC8C42EF4D22300A616D3 /* Kingfisher */; };
 		B58DC8C72EF4DFF100A616D3 /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DC8C62EF4DFF100A616D3 /* NotificationSettingsViewController.swift */; };
+		B58DC8C92EF4E53300A616D3 /* AIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DC8C82EF4E53300A616D3 /* AIViewController.swift */; };
+		B58DC8CB2EF4E7E000A616D3 /* RouletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DC8CA2EF4E7E000A616D3 /* RouletteViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,6 +92,8 @@
 		B5499DC62EF32CE100D80BB3 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		B58DC8C22EF4D1B100A616D3 /* Kingfisher-master */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "Kingfisher-master"; path = "../Kingfisher-master"; sourceTree = "<group>"; };
 		B58DC8C62EF4DFF100A616D3 /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
+		B58DC8C82EF4E53300A616D3 /* AIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIViewController.swift; sourceTree = "<group>"; };
+		B58DC8CA2EF4E7E000A616D3 /* RouletteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouletteViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +159,8 @@
 				B5499DBE2EF320FC00D80BB3 /* SearchViewController.swift */,
 				B5499DC02EF3211100D80BB3 /* ProfileViewController.swift */,
 				B58DC8C62EF4DFF100A616D3 /* NotificationSettingsViewController.swift */,
+				B58DC8C82EF4E53300A616D3 /* AIViewController.swift */,
+				B58DC8CA2EF4E7E000A616D3 /* RouletteViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -365,9 +371,11 @@
 				B5499DB12EF3170B00D80BB3 /* MovieEndpoint.swift in Sources */,
 				B51C95E22EF1C4AB004787DD /* KeychainManager.swift in Sources */,
 				B5499DAA2EF3140200D80BB3 /* Cast.swift in Sources */,
+				B58DC8C92EF4E53300A616D3 /* AIViewController.swift in Sources */,
 				B5499DBD2EF320E900D80BB3 /* SearchViewModel.swift in Sources */,
 				B51C95BD2EF1AFE8004787DD /* AppDelegate.swift in Sources */,
 				B51C95E42EF1C589004787DD /* AuthViewModel.swift in Sources */,
+				B58DC8CB2EF4E7E000A616D3 /* RouletteViewController.swift in Sources */,
 				B5499DC32EF32C7300D80BB3 /* Genre.swift in Sources */,
 				B51C95BF2EF1AFE8004787DD /* SceneDelegate.swift in Sources */,
 				B5499DA12EF30DA800D80BB3 /* MovieResponse.swift in Sources */,
