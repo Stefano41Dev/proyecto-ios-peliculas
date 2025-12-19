@@ -13,7 +13,8 @@ class ProfileViewController: UIViewController {
     private var userEmail: String {
             return KeychainManager.getCurrentUser() ?? "Invitado"
         }
-
+    private let authViewModel = AuthViewModel()
+    
     private let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .insetGrouped) // Estilo moderno iOS
         tv.backgroundColor = .black
@@ -149,8 +150,131 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if menuItems[indexPath.row].0 == "Cerrar Sesión" {
+        let itemTitle = menuItems[indexPath.row].0
+        
+        switch itemTitle {
+        case "Cuenta":
+            showAccountOptions() // <--- Nueva función
+        case "Cerrar Sesión":
             handleLogout()
+            // Casos para Notificaciones o Ayuda si los implementas
+        default:
+            break
         }
     }
+    private func showAccountOptions() {
+            let actionSheet = UIAlertController(title: "Configuración de Cuenta", message: "¿Qué deseas modificar?", preferredStyle: .actionSheet)
+            
+            actionSheet.addAction(UIAlertAction(title: "Cambiar Correo / Usuario", style: .default, handler: { _ in
+                self.showChangeEmailAlert()
+            }))
+            
+            actionSheet.addAction(UIAlertAction(title: "Cambiar Contraseña", style: .default, handler: { _ in
+                self.showChangePasswordAlert()
+            }))
+            
+            actionSheet.addAction(UIAlertAction(title: "Cancelar", style: .cancel))
+            
+            present(actionSheet, animated: true)
+        }
+        
+        // ALERTA: Cambiar Email
+        private func showChangeEmailAlert() {
+            let alert = UIAlertController(title: "Actualizar Correo", message: "Ingresa tu contraseña actual y el nuevo correo.", preferredStyle: .alert)
+            
+            alert.addTextField { tf in
+                tf.placeholder = "Nuevo Correo"
+                tf.keyboardType = .emailAddress
+            }
+            alert.addTextField { tf in
+                tf.placeholder = "Contraseña Actual"
+                tf.isSecureTextEntry = true
+            }
+            
+            let saveAction = UIAlertAction(title: "Guardar", style: .default) { _ in
+                guard let newEmail = alert.textFields?[0].text, !newEmail.isEmpty,
+                      let currentPass = alert.textFields?[1].text, !currentPass.isEmpty else {
+                    self.showError("Por favor completa todos los campos.")
+                    return
+                }
+                
+                let success = self.authViewModel.changeEmail(currentEmail: self.userEmail, currentPass: currentPass, newEmail: newEmail)
+                
+                if success {
+                    self.showSuccess("Correo actualizado correctamente.")
+                    self.setupHeader() // Recargar el header para ver el nuevo correo/inicial
+                } else {
+                    self.showError("Contraseña incorrecta o error al guardar.")
+                }
+            }
+            
+            alert.addAction(saveAction)
+            alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel))
+            present(alert, animated: true)
+        }
+        
+        // ALERTA: Cambiar Contraseña
+        private func showChangePasswordAlert() {
+            let alert = UIAlertController(title: "Cambiar Contraseña", message: nil, preferredStyle: .alert)
+            
+            // Campos de texto
+            alert.addTextField { tf in
+                tf.placeholder = "Contraseña Actual"
+                tf.isSecureTextEntry = true
+            }
+            alert.addTextField { tf in
+                tf.placeholder = "Nueva Contraseña"
+                tf.isSecureTextEntry = true
+            }
+            alert.addTextField { tf in
+                tf.placeholder = "Confirmar Nueva Contraseña"
+                tf.isSecureTextEntry = true
+            }
+            
+            let saveAction = UIAlertAction(title: "Actualizar", style: .default) { _ in
+                guard let currentPass = alert.textFields?[0].text, !currentPass.isEmpty,
+                      let newPass = alert.textFields?[1].text, !newPass.isEmpty,
+                      let confirmPass = alert.textFields?[2].text, !confirmPass.isEmpty else {
+                    self.showError("Completa todos los campos.")
+                    return
+                }
+                
+                // Validar que la nueva coincida con la confirmación
+                guard newPass == confirmPass else {
+                    self.showError("Las nuevas contraseñas no coinciden.")
+                    return
+                }
+                
+                // Validar longitud mínima (opcional)
+                if newPass.count < 6 {
+                    self.showError("La contraseña debe tener al menos 6 caracteres.")
+                    return
+                }
+                
+                let success = self.authViewModel.changePassword(email: self.userEmail, currentPass: currentPass, newPass: newPass)
+                
+                if success {
+                    self.showSuccess("Tu contraseña ha sido actualizada.")
+                } else {
+                    self.showError("La contraseña actual es incorrecta.")
+                }
+            }
+            
+            alert.addAction(saveAction)
+            alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel))
+            present(alert, animated: true)
+        }
+        
+        // Helpers para mensajes rápidos
+        private func showError(_ message: String) {
+            let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
+        
+        private func showSuccess(_ message: String) {
+            let alert = UIAlertController(title: "Éxito", message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
 }

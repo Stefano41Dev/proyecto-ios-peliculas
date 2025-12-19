@@ -104,7 +104,14 @@ class RegisterViewController: UIViewController {
 
     @objc private func handleRegister() {
         guard let email = emailTextField.text, let password = passwordTextField.text else { return }
-
+        
+        if password.count < 6 {
+                    let alert = UIAlertController(title: "Contraseña muy corta", message: "La contraseña debe tener al menos 6 caracteres.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Entendido", style: .default))
+                    present(alert, animated: true)
+                    return
+                }
+        
         if viewModel.register(email: email, password: password) {
             let alert = UIAlertController(title: "¡Éxito!", message: "Cuenta creada exitosamente", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
