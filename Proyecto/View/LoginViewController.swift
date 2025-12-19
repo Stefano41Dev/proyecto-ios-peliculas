@@ -13,7 +13,7 @@ class LoginViewController: UIViewController {
 
     private let emailTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "Correo electrónico"
+        tf.placeholder = "Correo electrónico / Usuario"
         tf.autocapitalizationType = .none
         tf.autocorrectionType = .no
         tf.borderStyle = .roundedRect

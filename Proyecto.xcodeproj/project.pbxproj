@@ -45,6 +45,7 @@
 		B5499DC52EF32C8700D80BB3 /* GenreResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5499DC42EF32C8700D80BB3 /* GenreResponse.swift */; };
 		B5499DC72EF32CE100D80BB3 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5499DC62EF32CE100D80BB3 /* CategoryCell.swift */; };
 		B58DC8C52EF4D22300A616D3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = B58DC8C42EF4D22300A616D3 /* Kingfisher */; };
+		B58DC8C72EF4DFF100A616D3 /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DC8C62EF4DFF100A616D3 /* NotificationSettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +89,7 @@
 		B5499DC42EF32C8700D80BB3 /* GenreResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreResponse.swift; sourceTree = "<group>"; };
 		B5499DC62EF32CE100D80BB3 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		B58DC8C22EF4D1B100A616D3 /* Kingfisher-master */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "Kingfisher-master"; path = "../Kingfisher-master"; sourceTree = "<group>"; };
+		B58DC8C62EF4DFF100A616D3 /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 				B5499DBA2EF31F4D00D80BB3 /* MainTabBarController.swift */,
 				B5499DBE2EF320FC00D80BB3 /* SearchViewController.swift */,
 				B5499DC02EF3211100D80BB3 /* ProfileViewController.swift */,
+				B58DC8C62EF4DFF100A616D3 /* NotificationSettingsViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 				B51C95C12EF1AFE8004787DD /* ViewController.swift in Sources */,
 				B51C95F02EF1CE37004787DD /* MovieCell.swift in Sources */,
 				B51C95EE2EF1CDB1004787DD /* CarouselCell.swift in Sources */,
+				B58DC8C72EF4DFF100A616D3 /* NotificationSettingsViewController.swift in Sources */,
 				B5499DBB2EF31F4D00D80BB3 /* MainTabBarController.swift in Sources */,
 				B5499DC12EF3211100D80BB3 /* ProfileViewController.swift in Sources */,
 				B5499DA82EF3105700D80BB3 /* MovieRepository.swift in Sources */,
