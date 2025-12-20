@@ -177,8 +177,8 @@ class AIViewController: UIViewController {
     // MARK: - Navegación (Placeholders)
     
     @objc private func goToMoodMatcher() {
-        print("Navegar a Mood Matcher")
-        // Aquí conectaremos el VC real en el siguiente paso
+        let moodVC = MoodMatcherViewController()
+        navigationController?.pushViewController(moodVC, animated: true)
     }
     
     @objc private func goToRoulette() {

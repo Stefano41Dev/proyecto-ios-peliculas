@@ -90,8 +90,9 @@ class APIManager {
             }
             task.resume()
         }
-    func fetchMovies(endpoint: MovieEndpoint, completion: @escaping ([Movie]?, Error?) -> Void) {
-            let urlString = "\(baseURL)/movie/\(endpoint.rawValue)?api_key=\(apiKey)&language=es-ES"
+    // MODIFICADO: Agregamos el parámetro 'page'
+        func fetchMovies(endpoint: MovieEndpoint, page: Int = 1, completion: @escaping ([Movie]?, Error?) -> Void) {
+            let urlString = "\(baseURL)/movie/\(endpoint.rawValue)?api_key=\(apiKey)&language=es-ES&page=\(page)"
             guard let url = URL(string: urlString) else { return }
             
             URLSession.shared.dataTask(with: url) { data, _, error in

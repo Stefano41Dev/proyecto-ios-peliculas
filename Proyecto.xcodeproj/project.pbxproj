@@ -48,6 +48,7 @@
 		B58DC8C72EF4DFF100A616D3 /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DC8C62EF4DFF100A616D3 /* NotificationSettingsViewController.swift */; };
 		B58DC8C92EF4E53300A616D3 /* AIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DC8C82EF4E53300A616D3 /* AIViewController.swift */; };
 		B58DC8CB2EF4E7E000A616D3 /* RouletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DC8CA2EF4E7E000A616D3 /* RouletteViewController.swift */; };
+		B59B56CC2EF704910013ADDD /* MoodMatcherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B56CB2EF704910013ADDD /* MoodMatcherViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +95,7 @@
 		B58DC8C62EF4DFF100A616D3 /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		B58DC8C82EF4E53300A616D3 /* AIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIViewController.swift; sourceTree = "<group>"; };
 		B58DC8CA2EF4E7E000A616D3 /* RouletteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouletteViewController.swift; sourceTree = "<group>"; };
+		B59B56CB2EF704910013ADDD /* MoodMatcherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodMatcherViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +163,7 @@
 				B58DC8C62EF4DFF100A616D3 /* NotificationSettingsViewController.swift */,
 				B58DC8C82EF4E53300A616D3 /* AIViewController.swift */,
 				B58DC8CA2EF4E7E000A616D3 /* RouletteViewController.swift */,
+				B59B56CB2EF704910013ADDD /* MoodMatcherViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 			files = (
 				B5499DBF2EF320FC00D80BB3 /* SearchViewController.swift in Sources */,
 				B51C95F42EF1D8CA004787DD /* Movie.swift in Sources */,
+				B59B56CC2EF704910013ADDD /* MoodMatcherViewController.swift in Sources */,
 				B5499DB92EF31F2A00D80BB3 /* FavoritesViewController.swift in Sources */,
 				B5499DA52EF30FC800D80BB3 /* WelcomeViewModel.swift in Sources */,
 				B5499D9C2EF30C0600D80BB3 /* Trailer.swift in Sources */,

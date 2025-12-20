@@ -15,6 +15,7 @@ struct Movie: Codable {
     let releaseDate: String?
     let voteAverage: Double?  // Tu "Ranking" o calificación
     let runtime: Int?         // Duración en minutos
+    let genreIds: [Int]?
     
     // Estos campos vendrán llenos solo cuando usemos el endpoint de detalle con append_to_response
     let credits: CreditsResponse?
@@ -27,6 +28,7 @@ struct Movie: Codable {
         case releaseDate = "release_date"
         case voteAverage = "vote_average"
         case runtime
+        case genreIds = "genre_ids"
         case credits, videos
     }
 

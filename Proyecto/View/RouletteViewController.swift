@@ -168,14 +168,24 @@ class RouletteViewController: UIViewController {
     
     private func startFloatingAnimation() {
         // Animación suave de arriba a abajo para parecer que levita
-        UIView.animate(withDuration: 2.0, delay: 0, options: [.autoreverse, .repeat, .curveEaseInOut], animations: {
-            self.crystalBallView.transform = CGAffineTransform(translationX: 0, y: -10)
-        }, completion: nil)
+        UIView.animate(withDuration: 2.0,
+                               delay: 0,
+                               options: [.autoreverse, .repeat, .curveEaseInOut, .allowUserInteraction],
+                               animations: {
+                    self.crystalBallView.transform = CGAffineTransform(translationX: 0, y: -10)
+                }, completion: nil)
     }
     
     @objc private func handleBallTap() {
         // Evitar doble tap
-        guard !candidateMovies.isEmpty else { return }
+        guard !candidateMovies.isEmpty else {
+                print("⏳ Aún cargando películas o error de conexión...")
+                // Opcional: Mostrar una pequeña alerta visual
+                let alert = UIAlertController(title: "Cargando", message: "Los astros se están alineando (cargando datos)... intenta de nuevo en unos segundos.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                present(alert, animated: true)
+                return
+        }
         crystalBallView.isUserInteractionEnabled = false
         
         // 1. Feedback táctil
