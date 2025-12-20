@@ -13,20 +13,30 @@ class MovieDetailViewController: UIViewController {
     private let viewModel: MovieDetailViewModel
     
     // MARK: - UI Elements
+    
     private let backButton: UIButton = {
-            let btn = UIButton(type: .system)
-            // Usamos un ícono de sistema (SF Symbol)
-            let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
-            let image = UIImage(systemName: "chevron.left", withConfiguration: config) // O "xmark"
-            btn.setImage(image, for: .normal)
-            
-            // Estilo: Círculo blanco semitransparente o negro
-            btn.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-            btn.tintColor = .white
-            btn.layer.cornerRadius = 20 // Para que sea redondo (mitad de 40)
-            btn.translatesAutoresizingMaskIntoConstraints = false
-            return btn
-        }()
+        let btn = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
+        let image = UIImage(systemName: "chevron.left", withConfiguration: config)
+        btn.setImage(image, for: .normal)
+        btn.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        btn.tintColor = .white
+        btn.layer.cornerRadius = 20
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
+    }()
+    
+    private let favoriteButton: UIButton = {
+        let btn = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
+        let image = UIImage(systemName: "heart", withConfiguration: config)
+        btn.setImage(image, for: .normal)
+        btn.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        btn.tintColor = .white
+        btn.layer.cornerRadius = 20
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
+    }()
     
     private let scrollView: UIScrollView = {
         let sv = UIScrollView()
@@ -44,7 +54,7 @@ class MovieDetailViewController: UIViewController {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.backgroundColor = .darkGray // Placeholder visual
+        iv.backgroundColor = .darkGray
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
@@ -65,12 +75,43 @@ class MovieDetailViewController: UIViewController {
         return label
     }()
     
-    private let infoLabel: UILabel = { // Fecha, Duración, Ranking
+    // NUEVO: Tagline (Frase promocional)
+    private let taglineLabel: UILabel = {
+        let label = UILabel()
+        label.font = .italicSystemFont(ofSize: 16)
+        label.textColor = .systemGray2
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let infoLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .medium)
         label.textColor = .lightGray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    // NUEVO: Géneros y Metadata
+    private let genresLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 13, weight: .semibold)
+        label.textColor = .systemRed // Color destacado
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let watchTrailerButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setTitle("Ver Trailer", for: .normal)
+        btn.backgroundColor = .systemRed
+        btn.tintColor = .white
+        btn.layer.cornerRadius = 8
+        btn.isHidden = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
     }()
     
     private let overviewLabel: UILabel = {
@@ -91,7 +132,6 @@ class MovieDetailViewController: UIViewController {
         return label
     }()
     
-    // CollectionView para el reparto (horizontal)
     private let castCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -103,29 +143,6 @@ class MovieDetailViewController: UIViewController {
         return cv
     }()
     
-    private let watchTrailerButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.setTitle("Ver Trailer", for: .normal)
-        btn.backgroundColor = .systemRed
-        btn.tintColor = .white
-        btn.layer.cornerRadius = 8
-        btn.isHidden = true // Se oculta hasta cargar datos
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        return btn
-    }()
-    
-    private let favoriteButton: UIButton = {
-            let btn = UIButton(type: .system)
-            let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
-            let image = UIImage(systemName: "heart", withConfiguration: config)
-            btn.setImage(image, for: .normal)
-            btn.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-            btn.tintColor = .white
-            btn.layer.cornerRadius = 20
-            btn.translatesAutoresizingMaskIntoConstraints = false
-            return btn
-        }()
-
     // MARK: - Init
     
     init(movieID: Int) {
@@ -154,7 +171,18 @@ class MovieDetailViewController: UIViewController {
         gradientLayer.frame = backdropImageView.bounds
     }
     
-    // MARK: - Setup UI
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+        updateFavoriteIcon()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    // MARK: - UI Setup
     
     private func setupUI() {
         view.addSubview(scrollView)
@@ -164,15 +192,16 @@ class MovieDetailViewController: UIViewController {
         backdropImageView.layer.insertSublayer(gradientLayer, at: 0)
         
         contentView.addSubview(titleLabel)
+        contentView.addSubview(taglineLabel) // Nuevo
         contentView.addSubview(infoLabel)
+        contentView.addSubview(genresLabel) // Nuevo
         contentView.addSubview(watchTrailerButton)
         contentView.addSubview(overviewLabel)
         contentView.addSubview(castLabel)
         contentView.addSubview(castCollectionView)
         
-        // Configuración del CollectionView de actores
         castCollectionView.dataSource = self
-        castCollectionView.register(CastCell.self, forCellWithReuseIdentifier: CastCell.identifier) // (Debes crear esta celda simple)
+        castCollectionView.register(CastCell.self, forCellWithReuseIdentifier: CastCell.identifier)
         
         watchTrailerButton.addTarget(self, action: #selector(playTrailer), for: .touchUpInside)
         
@@ -183,14 +212,13 @@ class MovieDetailViewController: UIViewController {
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            // ContentView
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            // Backdrop Image (Cabecera)
+            // Image
             backdropImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             backdropImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             backdropImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -201,27 +229,36 @@ class MovieDetailViewController: UIViewController {
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
-            // Info (Rating, fecha, etc)
-            infoLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            // Tagline (Nuevo)
+            taglineLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+            taglineLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            taglineLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            
+            // Info (Rating, Fecha)
+            infoLabel.topAnchor.constraint(equalTo: taglineLabel.bottomAnchor, constant: 12),
             infoLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             infoLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
             
-            // Botón Trailer
-            watchTrailerButton.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 16),
+            // Genres (Nuevo)
+            genresLabel.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 8),
+            genresLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            genresLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            
+            // Button
+            watchTrailerButton.topAnchor.constraint(equalTo: genresLabel.bottomAnchor, constant: 20),
             watchTrailerButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            watchTrailerButton.widthAnchor.constraint(equalToConstant: 120),
-            watchTrailerButton.heightAnchor.constraint(equalToConstant: 40),
+            watchTrailerButton.widthAnchor.constraint(equalToConstant: 140),
+            watchTrailerButton.heightAnchor.constraint(equalToConstant: 44),
             
             // Overview
             overviewLabel.topAnchor.constraint(equalTo: watchTrailerButton.bottomAnchor, constant: 24),
             overviewLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             overviewLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
-            // Cast Label
+            // Cast
             castLabel.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: 24),
             castLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             
-            // Cast CollectionView
             castCollectionView.topAnchor.constraint(equalTo: castLabel.bottomAnchor, constant: 12),
             castCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             castCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -229,121 +266,130 @@ class MovieDetailViewController: UIViewController {
             castCollectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40)
         ])
     }
+    
     private func setupFavoritesButton() {
-            view.addSubview(favoriteButton)
-            favoriteButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
-            
-            NSLayoutConstraint.activate([
-                // Lo ponemos a la derecha, opuesto al botón atrás
-                favoriteButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-                favoriteButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                favoriteButton.widthAnchor.constraint(equalToConstant: 40),
-                favoriteButton.heightAnchor.constraint(equalToConstant: 40)
-            ])
-        }
-    private func updateFavoriteIcon() {
-            guard let movie = viewModel.movie, let id = movie.id else { return }
-            let isFav = FavoritesManager.shared.isFavorite(movieID: id)
-            let imageName = isFav ? "heart.fill" : "heart"
-            let color: UIColor = isFav ? .systemRed : .white
-            
-            favoriteButton.setImage(UIImage(systemName: imageName), for: .normal)
-            favoriteButton.tintColor = color
-        }
+        view.addSubview(favoriteButton)
+        favoriteButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
+        NSLayoutConstraint.activate([
+            favoriteButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            favoriteButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            favoriteButton.widthAnchor.constraint(equalToConstant: 40),
+            favoriteButton.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    
     private func setupBackButton() {
-            // IMPORTANTE: Añadirlo directamente a la 'view' principal, NO al ScrollView,
-            // para que se quede fijo flotando aunque bajes haciendo scroll.
-            view.addSubview(backButton)
-            
-            backButton.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
-            
-            NSLayoutConstraint.activate([
-                // Posición: Arriba a la izquierda
-                backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-                backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                
-                // Tamaño: 40x40
-                backButton.widthAnchor.constraint(equalToConstant: 40),
-                backButton.heightAnchor.constraint(equalToConstant: 40)
-            ])
-        }
-    override func viewWillAppear(_ animated: Bool) {
-            super.viewWillAppear(animated)
-            navigationController?.setNavigationBarHidden(true, animated: animated)
-        }
-
-        // Mostrarla de nuevo al salir (para que no afecte a otras pantallas)
-        override func viewWillDisappear(_ animated: Bool) {
-            super.viewWillDisappear(animated)
-            navigationController?.setNavigationBarHidden(false, animated: animated)
-        }
-    // MARK: - Binding
+        view.addSubview(backButton)
+        backButton.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
+        NSLayoutConstraint.activate([
+            backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            backButton.widthAnchor.constraint(equalToConstant: 40),
+            backButton.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    
+    // MARK: - Binding y Lógica
     
     private func bindViewModel() {
         viewModel.onDataLoaded = { [weak self] in
             self?.updateUI()
         }
-        
         viewModel.onError = { errorMsg in
             print("Error: \(errorMsg)")
         }
     }
     
     private func updateUI() {
-        titleLabel.text = viewModel.title
-        overviewLabel.text = viewModel.overview
-        infoLabel.text = viewModel.infoText
+        guard let movie = viewModel.movie else { return } // Accedemos al modelo crudo para los campos nuevos
+        
+        titleLabel.text = movie.title
+        overviewLabel.text = movie.overview
+        infoLabel.text = viewModel.infoText // Mantiene formato de Fecha | Duración | Rating
+        
+        // --- NUEVO: Mapeo de datos ---
+        
+        // Tagline (si existe)
+        if let tagline = movie.tagline, !tagline.isEmpty {
+            taglineLabel.text = "\"\(tagline)\""
+            taglineLabel.isHidden = false
+        } else {
+            taglineLabel.isHidden = true
+        }
+        
+        // Géneros y Lenguaje
+        var metaText = ""
+        if let genres = movie.genres {
+            let genreNames = genres.map { $0.name }.joined(separator: ", ")
+            metaText += genreNames
+        }
+        
+        if let lang = movie.originalLanguage {
+            let langUpper = lang.uppercased()
+            if !metaText.isEmpty { metaText += "  •  " }
+            metaText += "Idioma: \(langUpper)"
+        }
+        
+        genresLabel.text = metaText
+        // -----------------------------
         
         if let url = viewModel.backdropURL {
             backdropImageView.kf.setImage(with: url)
         }
         
         watchTrailerButton.isHidden = viewModel.trailers.isEmpty
+        updateFavoriteIcon()
         castCollectionView.reloadData()
     }
     
-    @objc private func playTrailer() {
-        // Lógica similar a la de tu CarouselCell para reproducir youtube
-        guard let trailer = viewModel.trailers.first(where: { $0.site == "YouTube" }) else { return }
-        let url = URL(string: "https://www.youtube.com/watch?v=\(trailer.key)")!
-        UIApplication.shared.open(url)
+    private func updateFavoriteIcon() {
+        guard let movie = viewModel.movie, let id = movie.id else { return }
+        let isFav = FavoritesManager.shared.isFavorite(movieID: id)
+        let imageName = isFav ? "heart.fill" : "heart"
+        let color: UIColor = isFav ? .systemRed : .white
+        favoriteButton.setImage(UIImage(systemName: imageName), for: .normal)
+        favoriteButton.tintColor = color
     }
-    @objc private func didTapBack() {
-            // Si hay una pila de navegación (Navigation Controller), hacemos "Pop" (Retroceder)
-            if let navigationController = navigationController {
-                navigationController.popViewController(animated: true)
-            } else {
-                // Si por alguna razón se presentó modal, usamos Dismiss
-                dismiss(animated: true, completion: nil)
-            }
-        }
+    
     @objc private func toggleFavorite() {
-            guard let movie = viewModel.movie else { return }
-            FavoritesManager.shared.toggleFavorite(movie: movie)
-            updateFavoriteIcon() // Actualiza visualmente
-            
-            // Feedback háptico (vibración ligera)
-            let generator = UIImpactFeedbackGenerator(style: .medium)
-            generator.impactOccurred()
+        guard let movie = viewModel.movie else { return }
+        FavoritesManager.shared.toggleFavorite(movie: movie)
+        updateFavoriteIcon()
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+    }
+    
+    @objc private func playTrailer() {
+        guard let trailer = viewModel.trailers.first(where: { $0.site == "YouTube" }) else { return }
+        if let url = URL(string: "https://www.youtube.com/watch?v=\(trailer.key)") {
+            UIApplication.shared.open(url)
         }
+    }
+    
+    @objc private func didTapBack() {
+        if let navigationController = navigationController {
+            navigationController.popViewController(animated: true)
+        } else {
+            dismiss(animated: true, completion: nil)
+        }
+    }
 }
 
-// MARK: - Extensions for CollectionView (Cast)
-
+// MARK: - CollectionView DataSource
 extension MovieDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.cast.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CastCell", for: indexPath) as! CastCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CastCell.identifier, for: indexPath) as! CastCell
         let actor = viewModel.cast[indexPath.row]
         cell.configure(with: actor)
         return cell
     }
 }
 
-// Celda simple interna para los actores
+// Celda interna para actores
 class CastCell: UICollectionViewCell {
     static let identifier = "CastCell"
     
@@ -351,7 +397,7 @@ class CastCell: UICollectionViewCell {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.layer.cornerRadius = 35 // Circular
+        iv.layer.cornerRadius = 35
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()

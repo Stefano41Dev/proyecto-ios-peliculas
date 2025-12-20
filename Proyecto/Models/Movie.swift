@@ -17,6 +17,10 @@ struct Movie: Codable {
     let runtime: Int?         // Duración en minutos
     let genreIds: [Int]?
     
+    let tagline: String?          // Ej: "El mundo cambiará para siempre."
+    let status: String?           // Ej: "Released"
+    let originalLanguage: String? // Ej: "en"
+    let genres: [Genre]?          // Lista de objetos género con nombre
     // Estos campos vendrán llenos solo cuando usemos el endpoint de detalle con append_to_response
     let credits: CreditsResponse?
     let videos: TrailerResponse?
@@ -30,6 +34,11 @@ struct Movie: Codable {
         case runtime
         case genreIds = "genre_ids"
         case credits, videos
+        
+        case tagline
+        case status
+        case originalLanguage = "original_language"
+        case genres
     }
 
     var posterURL: URL? {
