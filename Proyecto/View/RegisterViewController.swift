@@ -11,6 +11,16 @@ class RegisterViewController: UIViewController {
 
     private let viewModel = AuthViewModel()
 
+   
+    private let iconImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(named: "IconApp") 
+        iv.contentMode = .scaleAspectFit
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        return iv
+    }()
+    
+
     private let emailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Correo electrónico"
@@ -44,10 +54,9 @@ class RegisterViewController: UIViewController {
         return btn
     }()
     
-    // NUEVO BOTÓN: Para ir al Login si ya tiene cuenta
+    // Botón para volver al Login si ya tiene cuenta
     private let loginAccountButton: UIButton = {
         let btn = UIButton(type: .system)
-        // Usamos un texto con dos colores o simple, aquí uno simple pero elegante
         let attributedTitle = NSMutableAttributedString(string: "¿Ya tienes cuenta? ", attributes: [
             .foregroundColor: UIColor.white.withAlphaComponent(0.7),
             .font: UIFont.systemFont(ofSize: 14)
@@ -69,18 +78,27 @@ class RegisterViewController: UIViewController {
 
     private func setupUI() {
         view.backgroundColor = .black
+        
+        // Añadir vistas
+        view.addSubview(iconImageView) // <-- Añadido
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
         view.addSubview(registerButton)
-        view.addSubview(loginAccountButton) // Agregamos el nuevo botón a la vista
+        view.addSubview(loginAccountButton)
 
         registerButton.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
-        
-        // Conectamos la acción de ir al login
         loginAccountButton.addTarget(self, action: #selector(handleGoToLogin), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
-            emailTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
+            // --- Constraints para la Imagen ---
+            iconImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            iconImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            iconImageView.heightAnchor.constraint(equalToConstant: 120),
+            iconImageView.widthAnchor.constraint(equalToConstant: 120),
+            // ----------------------------------
+
+            // El campo de email va debajo de la imagen
+            emailTextField.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 40),
             emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
             emailTextField.heightAnchor.constraint(equalToConstant: 44),
@@ -95,7 +113,6 @@ class RegisterViewController: UIViewController {
             registerButton.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
             registerButton.heightAnchor.constraint(equalToConstant: 50),
             
-            // Constraints para el botón de Login
             loginAccountButton.topAnchor.constraint(equalTo: registerButton.bottomAnchor, constant: 16),
             loginAccountButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loginAccountButton.heightAnchor.constraint(equalToConstant: 44)
@@ -105,12 +122,13 @@ class RegisterViewController: UIViewController {
     @objc private func handleRegister() {
         guard let email = emailTextField.text, let password = passwordTextField.text else { return }
         
+        // Validación de contraseña corta
         if password.count < 6 {
-                    let alert = UIAlertController(title: "Contraseña muy corta", message: "La contraseña debe tener al menos 6 caracteres.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Entendido", style: .default))
-                    present(alert, animated: true)
-                    return
-                }
+            let alert = UIAlertController(title: "Contraseña muy corta", message: "La contraseña debe tener al menos 6 caracteres.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Entendido", style: .default))
+            present(alert, animated: true)
+            return
+        }
         
         if viewModel.register(email: email, password: password) {
             let alert = UIAlertController(title: "¡Éxito!", message: "Cuenta creada exitosamente", preferredStyle: .alert)
@@ -127,7 +145,6 @@ class RegisterViewController: UIViewController {
     
     // Acción para volver al Login
     @objc private func handleGoToLogin() {
-        // Simplemente cerramos esta pantalla para volver a la anterior (Login)
         dismiss(animated: true, completion: nil)
     }
 }

@@ -11,6 +11,16 @@ class LoginViewController: UIViewController {
 
     private let viewModel = AuthViewModel()
 
+   
+    private let iconImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(named: "IconApp")
+        iv.contentMode = .scaleAspectFit
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        return iv
+    }()
+    
+
     private let emailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Correo electrónico / Usuario"
@@ -67,6 +77,10 @@ class LoginViewController: UIViewController {
 
     private func setupUI() {
         view.backgroundColor = .black
+        
+        // Añadir la imagen a la vista
+        view.addSubview(iconImageView)
+        
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
         view.addSubview(loginButton)
@@ -77,7 +91,15 @@ class LoginViewController: UIViewController {
         createAccountButton.addTarget(self, action: #selector(openRegister), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
-            emailTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
+            // --- Constraints para la Imagen ---
+            iconImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            iconImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            iconImageView.heightAnchor.constraint(equalToConstant: 120), // Puedes ajustar el tamaño aquí
+            iconImageView.widthAnchor.constraint(equalToConstant: 120),
+            // ----------------------------------
+
+            // Modificamos el topAnchor del email para que esté debajo de la imagen
+            emailTextField.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 40),
             emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
             emailTextField.heightAnchor.constraint(equalToConstant: 44),
@@ -101,20 +123,19 @@ class LoginViewController: UIViewController {
     }
 
     @objc private func handleLogin() {
-            guard let email = emailTextField.text, let password = passwordTextField.text else { return }
+        guard let email = emailTextField.text, let password = passwordTextField.text else { return }
 
-            if viewModel.login(email: email, password: password) {
-                // CAMBIO AQUÍ: Instanciamos el TabBar
-                let mainTabBar = MainTabBarController()
-                mainTabBar.modalPresentationStyle = .fullScreen
-                mainTabBar.modalTransitionStyle = .crossDissolve // Transición suave
-                present(mainTabBar, animated: true)
-            } else {
-                let alert = UIAlertController(title: "Error", message: "Usuario o contraseña incorrectos", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default))
-                present(alert, animated: true)
-            }
+        if viewModel.login(email: email, password: password) {
+            let mainTabBar = MainTabBarController()
+            mainTabBar.modalPresentationStyle = .fullScreen
+            mainTabBar.modalTransitionStyle = .crossDissolve
+            present(mainTabBar, animated: true)
+        } else {
+            let alert = UIAlertController(title: "Error", message: "Usuario o contraseña incorrectos", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
         }
+    }
 
     @objc private func openRegister() {
         let registerVC = RegisterViewController()
@@ -122,5 +143,3 @@ class LoginViewController: UIViewController {
         present(registerVC, animated: true)
     }
 }
-
-
