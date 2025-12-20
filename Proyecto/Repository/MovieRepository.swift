@@ -26,6 +26,9 @@ class MovieRepository {
             apiManager.fetchMovieDetails(movieID: id) { movie, error in
                 completion(movie, error)
             }
-        }
+    }
+    func getMoviesList(by endpoint: MovieEndpoint, page: Int = 1, completion: @escaping ([Movie]?, Error?) -> Void) {
+            apiManager.fetchMovies(endpoint: endpoint, page: page, completion: completion)
+    }
     
 }

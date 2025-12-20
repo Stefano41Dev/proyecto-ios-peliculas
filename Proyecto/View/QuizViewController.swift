@@ -8,22 +8,10 @@
 import UIKit
 
 class QuizViewController: UIViewController {
-
-    // MARK: - Modelos
-    struct Question {
-        let text: String
-        let optionA: QuizOption
-        let optionB: QuizOption
-    }
     
-    struct QuizOption {
-        let title: String
-        let emoji: String
-        let filter: (Movie) -> Bool // Cada opción tiene su propia lógica de filtro
-    }
     
     // MARK: - Propiedades
-    private let apiManager = APIManager.shared
+    private let repository = MovieRepository()
     private var allMovies: [Movie] = []
     private var filteredMovies: [Movie] = []
     
@@ -324,32 +312,32 @@ class QuizViewController: UIViewController {
     // MARK: - Carga de Datos (Mix Popular + TopRated)
     
     private func preloadMovies() {
-        let group = DispatchGroup()
-        var tempMovies: [Movie] = []
-        
-        // Cargamos variedad para tener material para filtrar
-        let endpoints: [(MovieEndpoint, Int)] = [
-            (.popular, 1),
-            (.topRated, 1),
-            (.topRated, 2) // Más clásicos para la pregunta de "Época"
-        ]
-        
-        for (endpoint, page) in endpoints {
-            group.enter()
-            apiManager.fetchMovies(endpoint: endpoint, page: page) { movies, _ in
-                if let movies = movies {
-                    tempMovies.append(contentsOf: movies)
+            let group = DispatchGroup()
+            var tempMovies: [Movie] = []
+            
+            // REFACTOR: Usamos MovieEndpoint que ya está definido en tu proyecto
+            let requests: [(endpoint: MovieEndpoint, page: Int)] = [
+                (.popular, 1),
+                (.topRated, 1),
+                (.topRated, 2)
+            ]
+            
+            for req in requests {
+                group.enter()
+                // Llamada al repositorio
+                repository.getMoviesList(by: req.endpoint, page: req.page) { movies, _ in
+                    if let movies = movies {
+                        tempMovies.append(contentsOf: movies)
+                    }
+                    group.leave()
                 }
-                group.leave()
             }
-        }
-        
-        group.notify(queue: .main) { [weak self] in
-            // Eliminar duplicados
-            let uniqueMovies = Dictionary(grouping: tempMovies, by: { $0.id })
-                .compactMap { $0.value.first }
-            self?.allMovies = uniqueMovies
-            print("🧠 Quiz listo con \(uniqueMovies.count) películas.")
-        }
+            
+            group.notify(queue: .main) { [weak self] in
+                let uniqueMovies = Dictionary(grouping: tempMovies, by: { $0.id })
+                    .compactMap { $0.value.first }
+                self?.allMovies = uniqueMovies
+                print("🧠 Quiz listo con \(uniqueMovies.count) películas (vía Repository).")
+            }
     }
 }

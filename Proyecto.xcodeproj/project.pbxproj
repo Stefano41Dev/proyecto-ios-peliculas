@@ -50,6 +50,8 @@
 		B58DC8CB2EF4E7E000A616D3 /* RouletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DC8CA2EF4E7E000A616D3 /* RouletteViewController.swift */; };
 		B59B56CC2EF704910013ADDD /* MoodMatcherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B56CB2EF704910013ADDD /* MoodMatcherViewController.swift */; };
 		B59B56CF2EF70B670013ADDD /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B56CE2EF70B670013ADDD /* QuizViewController.swift */; };
+		B59B56D12EF70F640013ADDD /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B56D02EF70F640013ADDD /* Question.swift */; };
+		B59B56D32EF70F8A0013ADDD /* QuizOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B56D22EF70F8A0013ADDD /* QuizOption.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,6 +100,8 @@
 		B58DC8CA2EF4E7E000A616D3 /* RouletteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouletteViewController.swift; sourceTree = "<group>"; };
 		B59B56CB2EF704910013ADDD /* MoodMatcherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodMatcherViewController.swift; sourceTree = "<group>"; };
 		B59B56CE2EF70B670013ADDD /* QuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewController.swift; sourceTree = "<group>"; };
+		B59B56D02EF70F640013ADDD /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
+		B59B56D22EF70F8A0013ADDD /* QuizOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizOption.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +195,8 @@
 				B5499D9B2EF30C0600D80BB3 /* Trailer.swift */,
 				B5499DA92EF3140200D80BB3 /* Cast.swift */,
 				B5499DC22EF32C7300D80BB3 /* Genre.swift */,
+				B59B56D02EF70F640013ADDD /* Question.swift */,
+				B59B56D22EF70F8A0013ADDD /* QuizOption.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -361,6 +367,7 @@
 				B5499DB92EF31F2A00D80BB3 /* FavoritesViewController.swift in Sources */,
 				B5499DA52EF30FC800D80BB3 /* WelcomeViewModel.swift in Sources */,
 				B5499D9C2EF30C0600D80BB3 /* Trailer.swift in Sources */,
+				B59B56D32EF70F8A0013ADDD /* QuizOption.swift in Sources */,
 				B51C95F22EF1D508004787DD /* UImage.swift in Sources */,
 				B51C95E82EF1C5C6004787DD /* RegisterViewController.swift in Sources */,
 				B5499DAC2EF3154600D80BB3 /* MovieDetailViewModel.swift in Sources */,
@@ -380,6 +387,7 @@
 				B51C95E22EF1C4AB004787DD /* KeychainManager.swift in Sources */,
 				B5499DAA2EF3140200D80BB3 /* Cast.swift in Sources */,
 				B58DC8C92EF4E53300A616D3 /* AIViewController.swift in Sources */,
+				B59B56D12EF70F640013ADDD /* Question.swift in Sources */,
 				B5499DBD2EF320E900D80BB3 /* SearchViewModel.swift in Sources */,
 				B51C95BD2EF1AFE8004787DD /* AppDelegate.swift in Sources */,
 				B51C95E42EF1C589004787DD /* AuthViewModel.swift in Sources */,

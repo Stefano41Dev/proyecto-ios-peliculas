@@ -9,7 +9,7 @@ import UIKit
 
 class MoodMatcherViewController: UIViewController {
 
-    // MARK: - Lógica de "IA" (Estados de Ánimo)
+    // MARK: - Lógica de  (Estados de Ánimo)
     // Mapeamos emociones humanas a IDs técnicos de TMDB
     enum Mood: String, CaseIterable {
         case happy = "Feliz"
