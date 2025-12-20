@@ -78,7 +78,7 @@ class AIViewController: UIViewController {
         
         let option3 = createOptionRow(title: "Quiz de Personalidad",
                                       iconName: "brain.head.profile",
-                                      desc: "Responde 3 preguntas rápidas y nuestra IA analizará tus gustos.",
+                                      desc: "Responde 3 preguntas rápidas para recomendar una Pelìcula",
                                       action: #selector(goToQuiz))
         
         stackView.addArrangedSubview(option1)
@@ -187,7 +187,7 @@ class AIViewController: UIViewController {
     }
     
     @objc private func goToQuiz() {
-        print("Navegar a Quiz")
-        // Aquí conectaremos el VC real en el siguiente paso
+        let quizVC = QuizViewController()
+        navigationController?.pushViewController(quizVC, animated: true)
     }
 }

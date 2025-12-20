@@ -49,6 +49,7 @@
 		B58DC8C92EF4E53300A616D3 /* AIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DC8C82EF4E53300A616D3 /* AIViewController.swift */; };
 		B58DC8CB2EF4E7E000A616D3 /* RouletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DC8CA2EF4E7E000A616D3 /* RouletteViewController.swift */; };
 		B59B56CC2EF704910013ADDD /* MoodMatcherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B56CB2EF704910013ADDD /* MoodMatcherViewController.swift */; };
+		B59B56CF2EF70B670013ADDD /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B56CE2EF70B670013ADDD /* QuizViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -96,6 +97,7 @@
 		B58DC8C82EF4E53300A616D3 /* AIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIViewController.swift; sourceTree = "<group>"; };
 		B58DC8CA2EF4E7E000A616D3 /* RouletteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouletteViewController.swift; sourceTree = "<group>"; };
 		B59B56CB2EF704910013ADDD /* MoodMatcherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodMatcherViewController.swift; sourceTree = "<group>"; };
+		B59B56CE2EF70B670013ADDD /* QuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +166,7 @@
 				B58DC8C82EF4E53300A616D3 /* AIViewController.swift */,
 				B58DC8CA2EF4E7E000A616D3 /* RouletteViewController.swift */,
 				B59B56CB2EF704910013ADDD /* MoodMatcherViewController.swift */,
+				B59B56CE2EF70B670013ADDD /* QuizViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				B51C95E62EF1C5B5004787DD /* WelcomeViewController.swift in Sources */,
 				B5499DC72EF32CE100D80BB3 /* CategoryCell.swift in Sources */,
 				B5499DB12EF3170B00D80BB3 /* MovieEndpoint.swift in Sources */,
+				B59B56CF2EF70B670013ADDD /* QuizViewController.swift in Sources */,
 				B51C95E22EF1C4AB004787DD /* KeychainManager.swift in Sources */,
 				B5499DAA2EF3140200D80BB3 /* Cast.swift in Sources */,
 				B58DC8C92EF4E53300A616D3 /* AIViewController.swift in Sources */,
