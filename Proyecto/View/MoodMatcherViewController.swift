@@ -9,46 +9,8 @@ import UIKit
 
 class MoodMatcherViewController: UIViewController {
 
-    // MARK: - Lógica de  (Estados de Ánimo)
-    // Mapeamos emociones humanas a IDs técnicos de TMDB
-    enum Mood: String, CaseIterable {
-        case happy = "Feliz"
-        case sad = "Melancólico"
-        case intense = "Intenso"
-        case chill = "Relajado"
-        
-        var emoji: String {
-            switch self {
-            case .happy: return "😄"
-            case .sad: return "😢"
-            case .intense: return "😱"
-            case .chill: return "😎"
-            }
-        }
-        
-        var color: UIColor {
-            switch self {
-            case .happy: return .systemYellow
-            case .sad: return .systemBlue
-            case .intense: return .systemRed
-            case .chill: return .systemTeal
-            }
-        }
-        
-        // IDs de Géneros TMDB
-        var genreIds: [Int] {
-            switch self {
-            case .happy: return [35, 10751, 16] // Comedia, Familia, Animación
-            case .sad: return [18, 10749]       // Drama, Romance
-            case .intense: return [28, 27, 53]  // Acción, Terror, Thriller
-            case .chill: return [12, 14, 878]   // Aventura, Fantasía, Sci-Fi
-            }
-        }
-    }
-    
-    // MARK: - Propiedades
-    private let apiManager = APIManager.shared
-    private var allMovies: [Movie] = []
+    // MARK: - ViewModel
+    private let viewModel = MoodMatcherViewModel()
     
     // MARK: - UI Elements
     
@@ -65,7 +27,7 @@ class MoodMatcherViewController: UIViewController {
     
     private let subtitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Selecciona una emoción y la IA encontrará tu película ideal."
+        label.text = "Selecciona una emoción para encontrar tu película ideal."
         label.font = .systemFont(ofSize: 16, weight: .regular)
         label.textColor = .lightGray
         label.textAlignment = .center
@@ -74,7 +36,6 @@ class MoodMatcherViewController: UIViewController {
         return label
     }()
     
-    // StackView para los botones
     private let buttonsStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -84,7 +45,6 @@ class MoodMatcherViewController: UIViewController {
         return stack
     }()
     
-    // Indicador de carga
     private let activityIndicator: UIActivityIndicatorView = {
         let ai = UIActivityIndicatorView(style: .large)
         ai.color = .white
@@ -93,7 +53,6 @@ class MoodMatcherViewController: UIViewController {
         return ai
     }()
     
-    // Texto de "Pensando..."
     private let loadingLabel: UILabel = {
         let label = UILabel()
         label.text = "Analizando tus emociones..."
@@ -111,10 +70,65 @@ class MoodMatcherViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         setupUI()
-        preloadMovies()
+        bindViewModel()
+        viewModel.loadData()
     }
     
-    // MARK: - Setup UI
+    // MARK: - Binding (Conexión con ViewModel)
+    
+    private func bindViewModel() {
+        
+        // Reaccionar a cambios de estado de carga ("Pensando...")
+        viewModel.onLoadingStateChanged = { [weak self] isLoading in
+            self?.updateLoadingState(isLoading: isLoading)
+        }
+        
+        // Reaccionar cuando se encuentra una recomendación
+        viewModel.onRecommendationFound = { [weak self] movie, mood in
+            self?.showResult(movie: movie, mood: mood)
+        }
+        
+        // Reaccionar a errores
+        viewModel.onError = { errorMsg in
+            print("Error/Info: \(errorMsg)")
+        }
+    }
+    
+    // MARK: - UI Logic
+    
+    private func updateLoadingState(isLoading: Bool) {
+        if isLoading {
+            buttonsStack.isUserInteractionEnabled = false
+            UIView.animate(withDuration: 0.3) {
+                self.buttonsStack.alpha = 0.2
+                self.loadingLabel.alpha = 1.0
+            }
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+            loadingLabel.alpha = 0
+            buttonsStack.alpha = 1.0
+            buttonsStack.isUserInteractionEnabled = true
+        }
+    }
+    
+    private func showResult(movie: Movie, mood: MoodMatcherViewModel.Mood) {
+        let alert = UIAlertController(title: "Para un mood \(mood.rawValue)...",
+                                      message: "Te recomendamos ver:\n\n🎬 \(movie.title)\n\n\(movie.overview)",
+                                      preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Ver Detalles", style: .default, handler: { _ in
+            if let movieID = movie.id {
+                let detailVC = MovieDetailViewController(movieID: movieID)
+                self.navigationController?.pushViewController(detailVC, animated: true)
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel))
+        present(alert, animated: true)
+    }
+    
+    // MARK: - Setup UI Elements
     
     private func setupUI() {
         view.addSubview(titleLabel)
@@ -123,8 +137,8 @@ class MoodMatcherViewController: UIViewController {
         view.addSubview(activityIndicator)
         view.addSubview(loadingLabel)
         
-        // Crear botones dinámicamente
-        for mood in Mood.allCases {
+        // Crear botones usando los datos del ViewModel
+        for mood in viewModel.availableMoods {
             let button = createMoodButton(for: mood)
             buttonsStack.addArrangedSubview(button)
         }
@@ -151,11 +165,10 @@ class MoodMatcherViewController: UIViewController {
         ])
     }
     
-    // Diseño del Botón (Estilo Tarjeta Moderna)
-    private func createMoodButton(for mood: Mood) -> UIButton {
+    private func createMoodButton(for mood: MoodMatcherViewModel.Mood) -> UIButton {
         var config = UIButton.Configuration.filled()
-        config.baseBackgroundColor = mood.color.withAlphaComponent(0.2) // Fondo suave
-        config.baseForegroundColor = mood.color // Texto brillante
+        config.baseBackgroundColor = mood.color.withAlphaComponent(0.2)
+        config.baseForegroundColor = mood.color
         
         config.title = "\(mood.emoji)  \(mood.rawValue)"
         config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
@@ -172,111 +185,12 @@ class MoodMatcherViewController: UIViewController {
         button.layer.borderWidth = 1
         button.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
-        // Acción
+        // Acción conecta directamente al ViewModel
         let action = UIAction { [weak self] _ in
-            self?.handleMoodSelection(mood)
+            self?.viewModel.selectMood(mood)
         }
         button.addAction(action, for: .touchUpInside)
         
         return button
-    }
-    
-    // MARK: - Lógica
-    
-    private func preloadMovies() {
-            let group = DispatchGroup()
-            var tempMovies: [Movie] = []
-            
-            // ESTRATEGIA:
-            // 1. Traemos 3 páginas de "Top Rated" (Clásicos y variedad de años)
-            // 2. Traemos 1 página de "Popular" (Estrenos recientes)
-            // Total: ~80 películas para elegir
-            
-            let endpoints: [(endpoint: MovieEndpoint, page: Int)] = [
-                (.topRated, 1),
-                (.topRated, 2),
-                (.topRated, 3),
-                (.popular, 1)
-            ]
-            
-            for request in endpoints {
-                group.enter()
-                apiManager.fetchMovies(endpoint: request.endpoint, page: request.page) { movies, _ in
-                    if let movies = movies {
-                        tempMovies.append(contentsOf: movies)
-                    }
-                    group.leave()
-                }
-            }
-            
-            group.notify(queue: .main) { [weak self] in
-                // Eliminamos duplicados por si una película está en ambas listas
-                // (Usamos un diccionario para filtrar por ID único)
-                let uniqueMovies = Dictionary(grouping: tempMovies, by: { $0.id })
-                    .compactMap { $0.value.first }
-                
-                self?.allMovies = uniqueMovies
-                print("🎬 IA Lista: Se cargaron \(uniqueMovies.count) películas de diferentes años.")
-            }
-        }
-    
-    private func handleMoodSelection(_ mood: Mood) {
-        guard !allMovies.isEmpty else {
-            print("⏳ Esperando datos de películas...")
-            return
-        }
-        
-        // 1. Efecto visual "Pensando"
-        buttonsStack.isUserInteractionEnabled = false
-        UIView.animate(withDuration: 0.3) {
-            self.buttonsStack.alpha = 0.2
-            self.loadingLabel.alpha = 1.0
-        }
-        activityIndicator.startAnimating()
-        
-        // 2. Simular retraso de "IA" (1.5 segundos)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
-            self?.processRecommendation(for: mood)
-        }
-    }
-    
-    private func processRecommendation(for mood: Mood) {
-        // Restaurar UI
-        activityIndicator.stopAnimating()
-        loadingLabel.alpha = 0
-        buttonsStack.alpha = 1.0
-        buttonsStack.isUserInteractionEnabled = true
-        
-        // 3. Filtrar Películas
-        // Buscamos películas que contengan AL MENOS UNO de los géneros del mood
-        let targetGenreIds = Set(mood.genreIds)
-        
-        let matchingMovies = allMovies.filter { movie in
-            // IMPORTANTE: Asegúrate de que tu modelo Movie usa 'genreIds' o 'genre_ids'
-            guard let genres = movie.genreIds else { return false }
-            let movieGenres = Set(genres)
-            return !movieGenres.intersection(targetGenreIds).isEmpty
-        }
-        
-        // 4. Elegir una ganadora
-        if let winner = matchingMovies.randomElement() ?? allMovies.randomElement() {
-            showResult(movie: winner, mood: mood)
-        }
-    }
-    
-    private func showResult(movie: Movie, mood: Mood) {
-        let alert = UIAlertController(title: "Para un mood \(mood.rawValue)...",
-                                      message: "Te recomendamos ver:\n\n🎬 \(movie.title)\n\n\(movie.overview)",
-                                      preferredStyle: .actionSheet)
-        
-        alert.addAction(UIAlertAction(title: "Ver Detalles", style: .default, handler: { _ in
-            if let movieID = movie.id {
-                let detailVC = MovieDetailViewController(movieID: movieID)
-                self.navigationController?.pushViewController(detailVC, animated: true)
-            }
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel))
-        present(alert, animated: true)
     }
 }
